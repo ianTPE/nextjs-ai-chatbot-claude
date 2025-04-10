@@ -3,7 +3,7 @@ import {
   extractReasoningMiddleware,
   wrapLanguageModel,
 } from 'ai';
-import { xai } from '@ai-sdk/xai';
+import { anthropic } from '@ai-sdk/anthropic';
 import { isTestEnvironment } from '../constants';
 import {
   artifactModel,
@@ -23,15 +23,17 @@ export const myProvider = isTestEnvironment
     })
   : customProvider({
       languageModels: {
-        'chat-model': xai('grok-2-1212'),
+        'chat-model': anthropic('claude-3-5-sonnet-20240620'),
         'chat-model-reasoning': wrapLanguageModel({
-          model: xai('grok-3-mini-beta'),
+          model: anthropic('claude-3-5-sonnet-20240620'),
           middleware: extractReasoningMiddleware({ tagName: 'think' }),
         }),
-        'title-model': xai('grok-2-1212'),
-        'artifact-model': xai('grok-2-1212'),
+        'title-model': anthropic('claude-3-5-sonnet-20240620'),
+        'artifact-model': anthropic('claude-3-5-sonnet-20240620'),
       },
-      imageModels: {
-        'small-model': xai.image('grok-2-image'),
-      },
+      // Claude doesn't have image generation, so we're removing this section
+      // imageModels: {
+      //   'small-model': xai.image('grok-2-image'),
+      // },
+      
     });
